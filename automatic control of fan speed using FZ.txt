@@ -1,0 +1,199 @@
+//automatic control of fan speed using fuzzy logic :D :)
+package fan;
+import java.util.Scanner;
+public class Automatic {
+	//Declaration of static variables(output graph)
+	static int zero_min=0;
+	static int zero_max=30;
+	static int slow_min=0;
+	static int slow_mid=30;
+	static int slow_max=60;
+	static int med_min=30;
+	static int med_mid=60;
+	static int med_max=90;
+	static int fast_min=60;
+	static int fast_mid=90;
+	static int fast_max=120;
+	static int very_fast_min=90;
+	static int very_fast_max=120;
+	static float f,a,b,c,d,e;
+	static float p,q,r,s,t;
+	static float speed;
+	//function to input
+	public static void input()
+	{
+		System.out.println("input the temperature");
+		float temperature;
+		Scanner fa = new Scanner(System.in);
+		temperature = fa.nextFloat();
+		//starting with the rules
+		
+		//rule1: if (temperature is too cold) then (speed is zero)
+		a = membership_too_cold(temperature);
+		System.out.println(a+"tdegree  ");
+	
+		
+	
+		//Rule2:if(temperature is cold) the (speed is slow)
+		b= membership_cold(temperature);
+		System.out.println(b+"tdegree  ");
+	
+			//Rule3:if(temperature is warm) then(speed is medium)
+		c= membership_warm(temperature);
+		System.out.println(c+"tdegree  ");
+		
+		//rule4: if(temperature if hot) then(speed is fast)
+		d=membership_hot(temperature);
+		System.out.println(d+"tdegree  ");
+	
+		//rule5:if (temperature is very hot) then (speed is very fast)
+		e=membership_too_hot(temperature);
+		System.out.println(f+"tdegree  ");
+		
+		
+		}
+		
+	
+	
+	//membership functions for temperature
+	public static float membership_too_cold( float x)
+	{
+		if (x>=0 && x<=10)
+			return (10-x)/(10-0);
+		else
+			return 0;
+		
+	}
+	public static float membership_cold(float x)
+	{
+		if(x>=0 && x<=10)
+		return (x-0)/(10-0);
+		else if (x>10 && x<=20)
+		return (20-x)/(20-10);
+		else
+			return 0;
+	}
+	public static float membership_warm(float x)
+	{
+		if(x>=10 && x<=20)
+			return (x-10)/(20-10);
+		else if (x>20 && x<=30)
+			return (30-x)/(30-20);
+		else
+			return 0;
+	}
+	public static float membership_hot(float x)
+	{
+		if(x>=20 && x<=30)
+			return (x-20)/(30-20);
+		else if (x>30 && x<=40)
+			return (30-x)/(30-20);
+		else
+			return 0;
+	}
+	public static float membership_too_hot(float x)
+	{
+		if(x>=30 && x<=40)
+			return (x-30)/(40-30);
+		else return 0;
+
+		
+	}
+	
+	public static void defuzz(float x, float y)
+	{
+		
+		if(x==a && y==b)
+		{
+			
+			speed=((zero_min*a)+(slow_mid*b))/(a+b);
+			System.out.println(speed+"RPM ");
+		}
+		else if(x==b && y==c)
+		{
+			
+			speed=((slow_mid*b)+(med_mid*c))/(b+c);
+			System.out.println(speed+"RPM ");
+		}
+		else if(x==c && y==d)
+		{
+			speed=((med_mid*c)+(fast_mid*d))/(c+d);
+			System.out.println(speed+"RPM ");
+		}
+		else if(x==d && x==e)
+		{
+			
+			speed=((fast_mid*d)+(very_fast_max*e))/(d+e);
+			System.out.println(speed+"RPM ");
+		}
+		else
+		{
+			speed=120;
+		}
+	}
+	public static void output()
+	{
+
+		if((a>0 && a!=1)&&(b>0 && b!=1))
+		{
+			
+			defuzz(a,b);
+		}	
+		
+		 if((b>0 && b!=1)&&( c>0 && c!=1))
+		 {
+			
+			defuzz(b,c);
+		 }
+		 if((c>0 && c!=1) && (d>0 && d!=1))
+		 {
+
+			defuzz(c,d);
+		 }	
+		 if((d>0 && d!=1) && (e>0 && e!=1))
+		 {
+			
+			defuzz(d,e);
+		 }
+		 //if the membership degree is 1
+		 if(a==1)
+		 {
+			 speed=zero_max;
+			 System.out.println(speed+"RPM ");
+		 }
+		 if(b==1)
+		 {
+			 speed=slow_mid;
+			 System.out.println(speed+"RPM ");
+		 }
+		 if(c==1)
+		 {
+			 speed=med_mid;
+			 System.out.println(speed+"RPM ");
+		 }
+		 if(d==1)
+		 {
+			 speed=fast_mid;
+			 System.out.println(speed+"RPM ");
+		 }
+		 if(e==1)
+		 {
+			 speed=very_fast_max;
+			 System.out.println(speed+"RPM ");
+		 }
+		 
+		 
+	}
+	public static void main(String args[])
+	{
+		input();
+		System.out.println( "based on the input temperature " );
+		System.out.println("the speed of the fan :");
+		output();
+		
+			 
+		
+	
+	}
+
+}
